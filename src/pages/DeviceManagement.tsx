@@ -19,7 +19,7 @@ import { deviceService } from "@/services/device.service";
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 
-import AddDeviceModal from "@/components/pages/DeviceManagement/AddDeviceModal";
+import AddDeviceModal from "@/components/pages/device/AddDeviceModal";
 
 let DefaultIcon = L.icon({
   iconUrl: icon,

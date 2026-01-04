@@ -1,5 +1,5 @@
-import Background from "../components/pages/Login/Background";
-import ResetPasswordForm from "../components/pages/Login/ResetPasswordForm";
+import Background from "../components/pages/login/Background";
+import ResetPasswordForm from "../components/pages/login/ResetPasswordForm";
 
 export default function ResetPassword() {
   return (

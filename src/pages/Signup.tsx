@@ -1,5 +1,5 @@
-import Background from "../components/pages/Login/Background";
-import SignupForm from "../components/pages/Login/SignupForm";
+import Background from "../components/pages/login/Background";
+import SignupForm from "../components/pages/login/SignupForm";
 
 export default function Signup() {
   return (

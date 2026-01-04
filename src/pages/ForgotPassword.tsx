@@ -1,5 +1,5 @@
-import Background from "../components/pages/Login/Background";
-import ForgotPasswordForm from "../components/pages/Login/ForgotPasswordForm";
+import Background from "../components/pages/login/Background";
+import ForgotPasswordForm from "../components/pages/login/ForgotPasswordForm";
 
 export default function ForgotPassword() {
   return (

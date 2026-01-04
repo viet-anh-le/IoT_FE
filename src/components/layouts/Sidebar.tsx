@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Home,
   Dashboard,
+  People,
   Settings,
   NotificationsActive,
   Logout,
@@ -28,6 +29,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
       label: "Devices Management",
       path: "/device-management",
       icon: <Dashboard />,
+    },
+    {
+      label: "Users Management",
+      path: "/users",
+      icon: <People />,
     },
     { label: "Settings", path: "/settings", icon: <Settings /> },
     { label: "Alerting", path: "/alerting", icon: <NotificationsActive /> },

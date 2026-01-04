@@ -1,12 +1,12 @@
 import React from "react";
 import { useRoutes, Navigate, Outlet } from "react-router-dom";
 
-// Import các pages
 import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
 import ForgotPassword from "@/pages/ForgotPassword";
 import ResetPassword from "@/pages/ResetPassword";
 import DeviceManagement from "@/pages/DeviceManagement";
+import UserList from "@/pages/admin/UserList";
 import NotFound from "@/pages/NotFound";
 
 import DefaultLayout from "@/layouts/DefaultLayout";
@@ -76,6 +76,10 @@ export default function AllRoutes() {
         {
           path: "/device-management",
           element: <DeviceManagement />,
+        },
+        {
+          path: "/users",
+          element: <UserList />,
         },
       ],
     },
