@@ -55,7 +55,7 @@ const LoginForm: React.FC<any> = () => {
       );
 
       setTimeout(() => {
-        navigate("/dashboard");
+        navigate("/device-management");
       }, 1000);
     } catch (error: any) {
       console.error("Login Error:", error);

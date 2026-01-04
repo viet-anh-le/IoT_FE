@@ -1,10 +1,15 @@
 import React from "react";
-import { useRoutes, Navigate } from "react-router-dom";
-import Login from "../pages/Login";
-import Signup from "../pages/Signup";
-import ForgotPassword from "../pages/ForgotPassword";
+import { useRoutes, Navigate, Outlet } from "react-router-dom";
+
+// Import các pages
+import Login from "@/pages/Login";
+import Signup from "@/pages/Signup";
+import ForgotPassword from "@/pages/ForgotPassword";
 import ResetPassword from "@/pages/ResetPassword";
-import DeviceManagementScreen from "../pages/DeviceManagementScreen";
+import DeviceManagement from "@/pages/DeviceManagement";
+import NotFound from "@/pages/NotFound";
+
+import DefaultLayout from "@/layouts/DefaultLayout";
 import { isAuthenticated } from "../utils/auth";
 
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
@@ -62,17 +67,22 @@ export default function AllRoutes() {
     },
 
     {
-      path: "/device-management",
       element: (
         <PrivateRoute>
-          <DeviceManagementScreen />
+          <DefaultLayout />
         </PrivateRoute>
       ),
+      children: [
+        {
+          path: "/device-management",
+          element: <DeviceManagement />,
+        },
+      ],
     },
 
     {
       path: "*",
-      element: <div>404 Not Found</div>,
+      element: <NotFound />,
     },
   ];
 
