@@ -61,6 +61,10 @@ export const authService = {
     return response.data;
   },
 
+  updateFcmToken: async (token: string) => {
+    return await httpClient.put("/api/users/fcm-token", { fcm_token: token });
+  },
+
   logout: () => {
     Cookies.remove("accessToken");
     localStorage.removeItem("user");

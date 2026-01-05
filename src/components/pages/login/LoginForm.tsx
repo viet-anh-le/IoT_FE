@@ -16,6 +16,7 @@ import GlowingIconWrapper from "./GlowingIconWrapper";
 
 import { authSchema, LoginSchema } from "@/schemas/auth.schema";
 import { authService } from "@/services/auth.service";
+import { getFcmToken } from "@/configs/firebase.js";
 
 const LoginForm: React.FC<any> = () => {
   const navigate = useNavigate();
@@ -53,6 +54,14 @@ const LoginForm: React.FC<any> = () => {
           role: result?.user?.role,
         })
       );
+
+      const fcmToken = await getFcmToken();
+      if (fcmToken) {
+        await authService
+          .updateFcmToken(fcmToken)
+          .then(() => console.log("FCM Token synced"))
+          .catch((err) => console.error("FCM Sync failed", err));
+      }
 
       setTimeout(() => {
         navigate("/device-management");
