@@ -32,7 +32,6 @@ export const userService = {
     await httpClient.put(`/api/users/${id}`, data);
   },
 
-  // Placeholder cho các hành động khác
   deleteUser: async (id: string) => {
     await httpClient.delete(`/api/users/${id}`);
   },

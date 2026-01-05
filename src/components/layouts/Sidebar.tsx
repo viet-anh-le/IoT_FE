@@ -1,13 +1,6 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import {
-  Home,
-  Dashboard,
-  People,
-  Settings,
-  NotificationsActive,
-  Logout,
-} from "@mui/icons-material";
+import { Home, Dashboard, People, Logout } from "@mui/icons-material";
 import { authService } from "@/services/auth.service";
 
 interface SidebarProps {
@@ -35,8 +28,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
       path: "/users",
       icon: <People />,
     },
-    { label: "Settings", path: "/settings", icon: <Settings /> },
-    { label: "Alerting", path: "/alerting", icon: <NotificationsActive /> },
   ];
 
   const isActive = (path: string) => {

@@ -1,11 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Menu, Notifications, Person } from "@mui/icons-material";
+
+import { User } from "@/types/user.type";
 
 interface HeaderProps {
   toggleSidebar?: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (error) {}
+    }
+  }, []);
+
   return (
     <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 sticky top-0 z-40">
       <div className="flex items-center gap-4">
@@ -28,9 +41,14 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
 
         <div className="flex items-center gap-3 pl-6 border-l border-slate-200">
           <div className="text-right hidden sm:block">
-            <p className="text-sm font-medium text-slate-700">viet anh</p>
+            <p className="text-sm font-bold text-slate-700">
+              {user?.username || "Guest"}
+            </p>
+            <p className="text-xs text-slate-500 font-medium uppercase tracking-wide">
+              {user?.role || ""}
+            </p>
           </div>
-          <div className="h-9 w-9 rounded-full bg-slate-200 flex items-center justify-center text-slate-500 overflow-hidden">
+          <div className="h-9 w-9 rounded-full bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-500 overflow-hidden">
             <Person />
           </div>
         </div>
