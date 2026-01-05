@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Person,
   Mail,
@@ -7,10 +7,13 @@ import {
   Visibility,
   VisibilityOff,
   PersonAdd,
+  ErrorOutline,
 } from "@mui/icons-material";
 import GlowingIconWrapper from "./GlowingIconWrapper";
+import { authService } from "@/services/auth.service";
 
-const SignupForm: React.FC<any> = () => {
+const SignupForm: React.FC = () => {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,15 +21,38 @@ const SignupForm: React.FC<any> = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const handleSignup = (e: React.FormEvent) => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
     if (password !== confirmPassword) {
-      alert("Mật khẩu nhập lại không khớp!");
+      setError("Mật khẩu nhập lại không khớp!");
       return;
     }
-    console.log("Signup submitted:", { name, email, password });
-    if (name && email && password) {
-      alert(`Đăng ký thành công tài khoản: ${email}`);
+    if (password.length < 6) {
+      setError("Mật khẩu phải có ít nhất 6 ký tự.");
+      return;
+    }
+    setLoading(true);
+
+    try {
+      await authService.register({
+        username: name,
+        gmail: email,
+        password: password,
+      });
+
+      alert("Đăng ký thành công! Vui lòng đăng nhập.");
+      navigate("/login");
+    } catch (err: any) {
+      console.error(err);
+      const errorMessage =
+        err.response?.data?.message || "Đăng ký thất bại. Vui lòng thử lại.";
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -40,9 +66,16 @@ const SignupForm: React.FC<any> = () => {
             <PersonAdd fontSize="large" className="text-cyan-600" />
           </GlowingIconWrapper>
 
-          <h1 className="text-3xl font-bold text-slate-800 mb-8 tracking-tight">
+          <h1 className="text-3xl font-bold text-slate-800 mb-6 tracking-tight">
             Tạo tài khoản
           </h1>
+
+          {error && (
+            <div className="mb-6 w-full bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg flex items-center gap-2 text-sm">
+              <ErrorOutline fontSize="small" />
+              <span>{error}</span>
+            </div>
+          )}
 
           <form onSubmit={handleSignup} className="w-full space-y-6">
             <div className="relative group">
@@ -55,7 +88,8 @@ const SignupForm: React.FC<any> = () => {
                 type="text"
                 required
                 autoFocus
-                className="w-full bg-gray-50 border border-gray-300 text-slate-900 text-base rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 block pl-12 p-4 outline-none transition-all placeholder-slate-400 hover:bg-white"
+                disabled={loading}
+                className="w-full bg-gray-50 border border-gray-300 text-slate-900 text-base rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 block pl-12 p-4 outline-none transition-all placeholder-slate-400 hover:bg-white disabled:opacity-60"
                 placeholder="Họ và tên"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -71,8 +105,9 @@ const SignupForm: React.FC<any> = () => {
                 name="email"
                 type="email"
                 required
-                className="w-full bg-gray-50 border border-gray-300 text-slate-900 text-base rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 block pl-12 p-4 outline-none transition-all placeholder-slate-400 hover:bg-white"
-                placeholder="Địa chỉ Email"
+                disabled={loading}
+                className="w-full bg-gray-50 border border-gray-300 text-slate-900 text-base rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 block pl-12 p-4 outline-none transition-all placeholder-slate-400 hover:bg-white disabled:opacity-60"
+                placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -87,7 +122,8 @@ const SignupForm: React.FC<any> = () => {
                 name="password"
                 type={showPassword ? "text" : "password"}
                 required
-                className="w-full bg-gray-50 border border-gray-300 text-slate-900 text-base rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 block pl-12 pr-12 p-4 outline-none transition-all placeholder-slate-400 hover:bg-white"
+                disabled={loading}
+                className="w-full bg-gray-50 border border-gray-300 text-slate-900 text-base rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 block pl-12 pr-12 p-4 outline-none transition-all placeholder-slate-400 hover:bg-white disabled:opacity-60"
                 placeholder="Mật khẩu"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -114,7 +150,8 @@ const SignupForm: React.FC<any> = () => {
                 name="confirmPassword"
                 type={showConfirmPassword ? "text" : "password"}
                 required
-                className="w-full bg-gray-50 border border-gray-300 text-slate-900 text-base rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 block pl-12 pr-12 p-4 outline-none transition-all placeholder-slate-400 hover:bg-white"
+                disabled={loading}
+                className="w-full bg-gray-50 border border-gray-300 text-slate-900 text-base rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 block pl-12 pr-12 p-4 outline-none transition-all placeholder-slate-400 hover:bg-white disabled:opacity-60"
                 placeholder="Nhập lại mật khẩu"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
@@ -134,9 +171,17 @@ const SignupForm: React.FC<any> = () => {
 
             <button
               type="submit"
-              className="w-full text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:outline-none focus:ring-cyan-300 font-semibold rounded-lg text-lg px-5 py-3.5 text-center transition-all shadow-lg shadow-cyan-500/30 hover:-translate-y-0.5"
+              disabled={loading}
+              className="w-full text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:outline-none focus:ring-cyan-300 font-semibold rounded-lg text-lg px-5 py-3.5 text-center transition-all shadow-lg shadow-cyan-500/30 hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
             >
-              Đăng ký
+              {loading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <span>Đang xử lý...</span>
+                </div>
+              ) : (
+                "Đăng ký"
+              )}
             </button>
 
             <div className="text-center mt-6">

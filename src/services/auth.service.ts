@@ -23,6 +23,15 @@ interface LoginResponse {
 }
 
 export const authService = {
+  register: async (payload: {
+    username: string;
+    gmail: string;
+    password: string;
+  }) => {
+    const response = await httpClient.post("/api/auth/register", payload);
+    return response.data;
+  },
+
   login: async (data: LoginSchema) => {
     const response = await httpClient.post<LoginResponse>(
       "/api/auth/login",
