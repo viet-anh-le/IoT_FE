@@ -7,6 +7,11 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+
 import {
   Computer,
   Sensors,
@@ -19,7 +24,11 @@ import {
   Videocam,
   Edit,
   Delete,
+  LocationOn,
 } from "@mui/icons-material";
+
+import icon from "leaflet/dist/images/marker-icon.png";
+import iconShadow from "leaflet/dist/images/marker-shadow.png";
 
 import { Device, RoomData, StatItem } from "@/types/device.type";
 import { deviceService } from "@/services/device.service";
@@ -154,7 +163,6 @@ const DeviceManagement: React.FC = () => {
       setDeviceToDelete(null);
     } catch (error) {
       console.error("Failed to delete device:", error);
-      // Có thể thêm thông báo lỗi tại đây
     } finally {
       setIsDeleting(false);
     }
@@ -276,6 +284,50 @@ const DeviceManagement: React.FC = () => {
               </PieChart>
             </ResponsiveContainer>
           </div>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mx-4 md:mx-0">
+        <div className="p-4 border-b border-slate-100 flex items-center gap-2 bg-slate-50/50">
+          <LocationOn className="text-blue-600" />
+          <h3 className="font-bold text-slate-700">Bản đồ vị trí thiết bị</h3>
+        </div>
+
+        <div className="h-[400px] w-full relative z-0">
+          <MapContainer
+            center={[21.028511, 105.854167]}
+            zoom={12}
+            style={{ height: "100%", width: "100%" }}
+            scrollWheelZoom={false}
+          >
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            {/* {flatDevices.map((device) =>
+              device.location && device.location.latitude ? (
+                <Marker
+                  key={device.id}
+                  position={[
+                    device.location.latitude,
+                    device.location.longitude,
+                  ]}
+                >
+                  <Popup>
+                    <div className="p-1 text-center">
+                      <b className="text-blue-600 block mb-1">{device.name}</b>
+                      <span className="text-xs text-slate-500 block">
+                        {device.roomName}
+                      </span>
+                      <span className="text-[10px] text-slate-400 font-mono">
+                        {device.id}
+                      </span>
+                    </div>
+                  </Popup>
+                </Marker>
+              ) : null
+            )} */}
+          </MapContainer>
         </div>
       </div>
 
