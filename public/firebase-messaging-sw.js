@@ -6,7 +6,7 @@ importScripts(
 );
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  apiKey: "AIzaSyCkiqMuL9ap00nVMMGknZGM2a4rP01EoC0",
   authDomain: "smart-home-95086.firebaseapp.com",
   projectId: "smart-home-95086",
   storageBucket: "smart-home-95086.firebasestorage.app",
