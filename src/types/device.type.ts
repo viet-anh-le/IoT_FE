@@ -1,36 +1,38 @@
-export interface DeviceConfigEnv {
-  min: number;
-  max: number;
-  level: string;
-}
-
-export interface DeviceConfigNoti {
-  type: string;
-  webhook: string;
-  notification_cooldown: number;
-}
-
 export interface DeviceConfig {
-  temperature: DeviceConfigEnv;
-  humidity: DeviceConfigEnv;
-  notifications: DeviceConfigNoti;
-}
-
-export interface DeviceLocation {
-  latitude: number;
-  longitude: number;
+  pin: string | number;
+  active_low: boolean;
 }
 
 export interface Device {
-  device_id: string;
-  device_name: string;
-  location: DeviceLocation;
+  id: string;
+  name: string;
+  type: "light" | "fan" | "sensor" | "gate" | "camera" | string;
   config: DeviceConfig;
+  controller_key: string;
+  created_at: string;
   updated_at: string;
 }
 
-export interface ApiResponse {
-  message: string;
+export interface RoomData {
+  name: string;
   devices: Device[];
+}
+
+export interface StatItem {
+  room?: string;
+  type?: string;
   count: number;
+  [key: string]: any;
+}
+
+export interface StatsResponse {
+  success: boolean;
+  message: string;
+  by_room: { room: string; count: number }[];
+  by_type: { type: string; count: number }[];
+}
+
+export interface DevicesResponse {
+  success: boolean;
+  data: RoomData[];
 }

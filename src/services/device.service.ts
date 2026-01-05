@@ -1,14 +1,21 @@
 import { httpClient } from "@/http/http-client";
-import { ApiResponse, Device } from "@/types/device.type";
+import { DevicesResponse, StatsResponse } from "@/types/device.type";
 
 export const deviceService = {
   getAllDevices: async () => {
-    const response = await httpClient.get<ApiResponse>("/api/devices");
+    const response = await httpClient.get<DevicesResponse>("/api/devices");
     return response.data;
   },
 
-  createDevice: async (deviceData: any) => {
-    const response = await httpClient.post<Device>("/api/devices", deviceData);
+  async updateDevice(id: string, payload: any) {
+    return httpClient.put(`/api/devices/${id}`, payload);
+  },
+
+  async deleteDevice(id: string) {
+    return httpClient.delete(`/api/devices/${id}`);
+  },
+  getStats: async () => {
+    const response = await httpClient.get<StatsResponse>("/api/devices/stats");
     return response.data;
   },
 };
