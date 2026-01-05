@@ -360,7 +360,7 @@ const DeviceManagement: React.FC = () => {
                           {getDeviceIcon(device.type)}
                         </div>
                         <div>
-                          <p className="font-bold text-slate-700 group-hover:text-indigo-600 transition-colors">
+                          <p className="font-semibold text-slate-700 group-hover:text-indigo-600 transition-colors">
                             {device.name}
                           </p>
                         </div>
@@ -372,7 +372,7 @@ const DeviceManagement: React.FC = () => {
                         <div className="w-9 h-9 rounded-full bg-indigo-50 border-2 border-white shadow-sm flex items-center justify-center text-indigo-500">
                           <MeetingRoom style={{ fontSize: 18 }} />
                         </div>
-                        <span className="text-slate-700 font-medium text-sm">
+                        <span className="text-slate-700 font-medium text-md">
                           {device.roomName}
                         </span>
                       </div>
@@ -416,14 +416,14 @@ const DeviceManagement: React.FC = () => {
                           title="Cập nhật"
                           onClick={() => handleEditClick(device)}
                         >
-                          <Edit fontSize="small" />
+                          <Edit />
                         </button>
                         <button
                           className="p-2 text-red-500 hover:bg-red-50 rounded-xl transition-colors"
                           title="Xóa"
                           onClick={() => handleDeleteClick(device)}
                         >
-                          <Delete fontSize="small" />
+                          <Delete />
                         </button>
                       </div>
                     </td>

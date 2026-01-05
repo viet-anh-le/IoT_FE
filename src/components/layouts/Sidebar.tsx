@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Home, Dashboard, People, Logout } from "@mui/icons-material";
+import { Dashboard, People, Logout } from "@mui/icons-material";
 import { authService } from "@/services/auth.service";
 
 interface SidebarProps {
@@ -17,7 +17,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
   };
 
   const menuItems = [
-    { label: "Home", path: "/", icon: <Home /> },
     {
       label: "Devices Management",
       path: "/device-management",
