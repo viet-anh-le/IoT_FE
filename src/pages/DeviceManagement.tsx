@@ -304,29 +304,35 @@ const DeviceManagement: React.FC = () => {
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            {/* {flatDevices.map((device) =>
-              device.location && device.location.latitude ? (
-                <Marker
-                  key={device.id}
-                  position={[
-                    device.location.latitude,
-                    device.location.longitude,
-                  ]}
-                >
+            {flatDevices.map((device) => {
+              const hasLocation =
+                device.location &&
+                device.location.coordinates &&
+                device.location.coordinates.length === 2;
+
+              if (!hasLocation) return null;
+              const [lng, lat] = device.location!.coordinates;
+              return (
+                <Marker key={device.id} position={[lat, lng]}>
                   <Popup>
-                    <div className="p-1 text-center">
-                      <b className="text-blue-600 block mb-1">{device.name}</b>
-                      <span className="text-xs text-slate-500 block">
+                    <div className="p-2 text-center min-w-[150px]">
+                      <div className="mb-2 text-indigo-600">
+                        {getDeviceIcon(device.type)}
+                      </div>
+                      <b className="text-slate-800 block mb-1 text-sm">
+                        {device.name}
+                      </b>
+                      <span className="text-xs text-slate-500 block bg-slate-100 rounded px-2 py-1 mx-auto w-fit mb-1">
                         {device.roomName}
                       </span>
-                      <span className="text-[10px] text-slate-400 font-mono">
-                        {device.id}
+                      <span className="text-[10px] text-slate-400 font-mono block">
+                        {device.controller_key}
                       </span>
                     </div>
                   </Popup>
                 </Marker>
-              ) : null
-            )} */}
+              );
+            })}
           </MapContainer>
         </div>
       </div>

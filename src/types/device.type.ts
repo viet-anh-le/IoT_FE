@@ -3,12 +3,18 @@ export interface DeviceConfig {
   active_low: boolean;
 }
 
+export interface GeoJSONPoint {
+  type: "Point";
+  coordinates: [number, number];
+}
+
 export interface Device {
   id: string;
   name: string;
   type: "light" | "fan" | "sensor" | "gate" | "camera" | string;
   config: DeviceConfig;
   controller_key: string;
+  location?: GeoJSONPoint;
   created_at: string;
   updated_at: string;
 }
