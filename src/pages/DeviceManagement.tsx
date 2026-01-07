@@ -27,7 +27,8 @@ import {
   LocationOn,
 } from "@mui/icons-material";
 
-import icon from "leaflet/dist/images/marker-icon.png";
+import iconMarker from "leaflet/dist/images/marker-icon.png";
+import iconRetina from "leaflet/dist/images/marker-icon-2x.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 
 import { Device, RoomData, StatItem } from "@/types/device.type";
@@ -97,6 +98,14 @@ const DeviceManagement: React.FC = () => {
   };
 
   useEffect(() => {
+    (async () => {
+      delete (L.Icon.Default.prototype as any)._getIconUrl;
+      L.Icon.Default.mergeOptions({
+        iconRetinaUrl: (iconRetina as any).src || iconRetina,
+        iconUrl: (iconMarker as any).src || iconMarker,
+        shadowUrl: (iconShadow as any).src || iconShadow,
+      });
+    })();
     fetchData();
   }, []);
 
