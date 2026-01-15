@@ -304,8 +304,8 @@ const DeviceManagement: React.FC = () => {
 
         <div className="h-[400px] w-full relative z-0">
           <MapContainer
-            center={[21.028511, 105.854167]}
-            zoom={12}
+            center={[20.980205, 105.84453]}
+            zoom={19}
             style={{ height: "100%", width: "100%" }}
             scrollWheelZoom={false}
           >
