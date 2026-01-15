@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Dashboard, People, Logout } from "@mui/icons-material";
 import { authService } from "@/services/auth.service";
+import { User } from "@/types/user.type";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -10,6 +11,15 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [user, setUser] = useState<User | null>(null);
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (error) {}
+    }
+  }, []);
 
   const handleLogout = () => {
     authService.logout();
@@ -21,11 +31,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
       label: "Devices Management",
       path: "/device-management",
       icon: <Dashboard />,
+      visible: true,
     },
     {
       label: "Users Management",
       path: "/users",
       icon: <People />,
+      visible: user?.role === "admin",
     },
   ];
 
@@ -47,21 +59,23 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
       </div>
 
       <nav className="flex-1 py-6 px-3 space-y-1">
-        {menuItems.map((item) => (
-          <Link
-            key={item.path}
-            to={item.path}
-            className={`flex items-center gap-3 px-4 py-3 rounded-md text-sm font-medium transition-colors
+        {menuItems
+          .filter((item) => item.visible)
+          .map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`flex items-center gap-3 px-4 py-3 rounded-md text-sm font-medium transition-colors
               ${
                 isActive(item.path)
                   ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20" // Active state
                   : "hover:bg-slate-800 hover:text-white"
               }`}
-          >
-            {React.cloneElement(item.icon as any, { fontSize: "small" })}
-            {item.label}
-          </Link>
-        ))}
+            >
+              {React.cloneElement(item.icon as any, { fontSize: "small" })}
+              {item.label}
+            </Link>
+          ))}
       </nav>
 
       <div className="p-4 border-t border-slate-700/50">

@@ -11,6 +11,7 @@ import NotFound from "@/pages/NotFound";
 
 import DefaultLayout from "@/layouts/DefaultLayout";
 import { isAuthenticated } from "../utils/auth";
+import { User } from "@/types/user.type";
 
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
   const isAuth = isAuthenticated();
@@ -20,6 +21,26 @@ const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
 const PublicRoute = ({ children }: { children: React.ReactNode }) => {
   const isAuth = isAuthenticated();
   return isAuth ? <Navigate to="/device-management" replace /> : children;
+};
+
+const RoleProtectedRoute = ({
+  children,
+  allowedRoles,
+}: {
+  children: React.ReactNode;
+  allowedRoles: string[];
+}) => {
+  const userStr = localStorage.getItem("user");
+  let user: User | null = null;
+  try {
+    user = userStr ? JSON.parse(userStr) : null;
+  } catch (e) {
+    user = null;
+  }
+  if (!user || !allowedRoles.includes(user.role)) {
+    return <Navigate to="/device-management" replace />;
+  }
+  return children;
 };
 
 export default function AllRoutes() {
@@ -79,7 +100,11 @@ export default function AllRoutes() {
         },
         {
           path: "/users",
-          element: <UserList />,
+          element: (
+            <RoleProtectedRoute allowedRoles={["admin"]}>
+              <UserList />
+            </RoleProtectedRoute>
+          ),
         },
       ],
     },
